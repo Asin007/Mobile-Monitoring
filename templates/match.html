@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Offender Identified</h1>
+    <div class="match-details">
+        <h2>Offender Details:</h2>
+        <ul>
+            <li><strong>Name:</strong> {{ name }}</li>
+            <li><strong>Aadhar Number:</strong> {{ aadhar_number }}</li>
+            <li><strong>Phone Number:</strong> {{ phone_number }}</li>
+            <li><strong>Email:</strong> {{ email }}</li>
+        </ul>
+    </div>
+    <div class="image-container">
+        <h2>Captured Image:</h2>
+        <img id="input-image" src="{{ url_for('static', filename='phone.jpg') }}" alt="Capture Image">
+
+    </div>
+</body>
+</html>

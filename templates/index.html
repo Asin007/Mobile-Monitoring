@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Face Recognition</h1>
+        <div class="image-container">
+            <img id="input-image" src="{{ url_for('static', filename='phone.jpg') }}" alt="Input Image">
+
+        </div>
+        <form id="image-form">
+            <label for="image-path">Enter Image Path:</label>
+            <input type="text" id="image-path" name="image_path" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result-container" style="display: none;">
+            <h2>Recognition Result:</h2>
+            <p id="result-message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('image-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var imagePath = document.getElementById('image-path').value;
+            var img = document.getElementById('input-image');
+            img.src = imagePath;
+            img.onload = function() {
+                document.getElementById('result-container').style.display = 'block';
+                document.getElementById('result-message').innerText = "Processing...";
+                fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image_path: imagePath })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // Check if match found or not
+                    if (data.includes("Match Found!")) {
+                        window.location.href = '/match';
+                    } else if (data.includes("No Match Found")) {
+                        window.location.href = '/no_match';
+                    } else {
+                        document.getElementById('result-message').innerText = data;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            };
+        });
+    </script>
+</body>
+</html>
